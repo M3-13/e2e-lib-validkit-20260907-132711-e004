@@ -37,6 +37,12 @@ def test_negative_bounds():
     assert clamp(0, -10, -1) == -1
 
 
+def test_low_equal_high_returns_that_value():
+    assert clamp(5, 5, 5) == 5
+    assert clamp(0, 5, 5) == 5
+    assert clamp(7, 5, 5) == 5
+
+
 def test_low_greater_than_high_raises_value_error():
     with pytest.raises(ValueError):
         clamp(1, 10, 0)
