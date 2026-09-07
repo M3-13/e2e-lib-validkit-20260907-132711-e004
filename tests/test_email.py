@@ -39,6 +39,8 @@ def test_valid_addresses(address):
         "user@example..com",
         "user@@example.com",
         "user@exa mple.com",
+        "user@-example.com",
+        "user@example-.com",
     ],
 )
 def test_invalid_formats(address):
@@ -76,9 +78,12 @@ def test_type_error_message_never_contains_the_value():
     assert "123" not in str(exc_info.value)
 
 
-def test_regex_has_no_nested_quantifiers():
-    from validkit.email import _EMAIL_RE
+def test_label_over_63_is_rejected():
+    assert is_valid_email("a@" + "b" * 64 + ".com") is False
 
-    pattern = _EMAIL_RE.pattern
-    nested = re.compile(r"\([^)]*[+*{][^)]*[+*{][^)]*\)")
-    assert nested.search(pattern) is None
+
+def test_regex_has_no_quantified_groups():
+    from validkit.email import _DOMAIN_RE, _LOCAL_PART_RE
+
+    for pattern in (_LOCAL_PART_RE.pattern, _DOMAIN_RE.pattern):
+        assert re.search(r"\)[+*?{]", pattern) is None
