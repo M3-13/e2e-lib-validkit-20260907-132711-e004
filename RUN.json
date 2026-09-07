@@ -6,7 +6,12 @@
       "dir": ".",
       "stack": "python",
       "kind": "cli",
-      "install": [["${python}", "-m", "pip", "install", "-e", "."]]
+      "install": [["${python}", "-m", "pip", "install", "-e", "."]],
+      "start": [
+        "${python}",
+        "-c",
+        "from validkit import is_valid_email, luhn_check, is_valid_iban, is_valid_isbn13, normalize_phone, strip_accents, mask_secret, slugify, clamp"
+      ]
     }
   ]
 }
